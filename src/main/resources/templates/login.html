@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<title>登录</title>
+
+<style type="text/css">
+@charset "utf-8";
+/* CSS Document */
+* {
+	margin: 0;
+	padding: 0;
+	font-family: "微软雅黑";
+}
+
+.clear {
+	clear: both;
+}
+body{
+	background-color: #1F4C67;
+}
+/* Login START */
+#login-box { /* width:1280px; */
+	margin: 0 auto;
+}
+
+#login-box .logo {
+	color: #fff;
+	text-align: center;
+	padding: 20px;
+}
+
+#login-box .login-box {
+	position: relative;
+	margin-top: 14px;
+}
+
+#login-box .login-box .login-content {
+	width: 50%;
+	margin: 0 auto;
+	border: 1px solid #a1bfd3;
+	background: #fff;
+	border-radius: 5px;
+}
+
+#login-box .login-box .ca-content {
+	
+}
+
+#login-box .login-box .login-content .top {
+	height: 56px;
+	line-height: 56px;
+	background: #f7f7f7 url(images/user-icon.png) 94px 10px no-repeat;
+	border-radius: 5px 5px 0px 0px;
+	border-bottom: 1px solid #a1bfd3;
+	color: #636363;
+	font-size: 18px;
+	padding-left: 140px;
+	margin-bottom: 12px;
+}
+
+#login-box .login-box .login-content .in-box {
+	margin-bottom: 10px;
+	padding-left: 24px;
+	color: #636363;
+	font-size: 12px;
+	text-align: center;
+}
+
+#login-box .login-box .login-content .in-box input{
+	width: 80%;
+}
+
+#login-box .login-box .ca-content .in-box {
+	padding-left: 0px;
+	text-align: center;
+	margin-top: 140px;
+	font-size: 16px;
+	color: green;
+	font-weight: bold;
+}
+
+#login-box .login-box .login-content .in-box>input {
+	height: 40px;
+	line-height: 40px;
+	background: #fff;
+	border-radius: 3px;
+	border: 1px solid #99bad9;
+	padding-left: 10px;
+	color: #bababa;
+	font-size: 12px;
+}
+#login-box .login-box .login-content .in-box>select {
+	height: 40px;
+	line-height: 40px;
+	background: #fff;
+	border-radius: 3px;
+	border: 1px solid #99bad9;
+	padding-left: 10px;
+	color: #bababa;
+	font-size: 12px;
+}
+
+#login-box .login-box .login-content .in-box .key {
+	display: inline-block;
+	width: 22px;
+	height: 16px;
+	background: url(images/key.jpg) no-repeat;
+	margin-left: -40px;
+	cursor: pointer;
+	vertical-align: middle;
+}
+
+#login-box .login-box .login-content .in-box .code {
+	width: 152px;
+}
+
+#login-box .login-box .login-content .in-box .code-img {
+	display: inline-block;
+	width: 79px;
+	height: 33px;
+	vertical-align: middle;
+	margin-left: 20px;
+}
+
+#login-box .login-box .login-content .in-box .remember {
+	vertical-align: middle;
+	margin-right: 5px;
+	height: 16px;
+}
+
+
+#login-box .login-box .login-content .in-box .label {
+	display: block;
+	text-align: left;
+	width: 80%;
+	margin: 0 auto;
+	margin-bottom: 10px;
+}
+
+#login-box .login-box .btn-box {
+	padding-left: 24px;
+	margin: 20px 0px;
+	text-align: center;
+}
+
+#login-box .login-box .btn-box .login-btn {
+	width: 285px;
+	height: 40px;
+	background: #ff5b28;
+	border-radius: 3px;
+	border: none;
+	color: #fff;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+#login-box .login-box .login-content .function {
+	width: 285px;
+	line-height: 23px;
+	margin: 0 auto;
+	text-align: right;
+}
+
+#login-box .login-box .login-content .function>a,#login-box .login-box .login-content .function span
+	{
+	text-decoration: none;
+	color: #6a8baa;
+	font-size: 12px;
+}
+
+#login-box .login-box .login-content .function span {
+	margin: 0px 10px;
+}
+
+#login-box .login-footer {
+	position: fixed;
+	bottom: 0px;
+	text-align: center;
+	width: 100%;
+	color: #fff;
+}
+
+#login-box .login-footer>div {
+	text-align: center;
+	font-size: 12px;
+	margin-bottom: 12px;
+}
+
+#login-box .login-footer .link a {
+	text-decoration: none;
+	color: #828e9e;
+}
+
+#login-box .login-footer .link span {
+	margin: 0px 10px;
+}
+
+.login-form-error {
+	height: 18px;
+	line-height: 18px;
+	font-size: 14px;
+	color: #e43737;
+	margin: 0 auto 5px;
+	text-align: center;
+	font-weight: bold;
+	float: left;
+	width: 100%;
+}
+.btn-min{
+	float: left;
+	width: 50%;
+	text-align: center;
+	background-color: #f7f7f7;
+	height: 30px;
+	line-height: 30px;
+	color: #636363;
+	cursor: pointer;
+}
+.btn-min:hover{
+	background-color: #F1F1F1;
+}
+.btn-bottom{
+	width: 100%;
+	position: absolute;
+	bottom: 0px;
+	border-top: 1px solid #a1bfd3;
+}
+/* Login END */
+</style>
+
+
+</head>
+<body>
+	<div id="login-box">
+		<div class="logo">
+			<h1>欢迎登录</h1>
+		</div>
+		<div class="login-box">
+			<!-- 普通登陆 -->
+			<div class="login-content" id="login-content">
+				<div class="top">登录</div>
+					<div id="error-info" class="login-form-error clearfix">
+						<div th:if="${param.error}">
+							<span th:text="${session.SPRING_SECURITY_LAST_EXCEPTION.message}"></span>
+						</div>
+						<div th:if="${param.logout}">您已注销成功</div>
+					</div>
+				<form id="loginForm" th:action="@{/login}" method="post">
+					<input type="hidden" name="loginType" value="1" />
+					<div class="in-box">
+						<span class="label">用户名</span>
+						<input id="input_username" class="username" name="username" type="text"
+							autocomplete="off"
+							placeholder="用户名"  value="admin"/>
+					</div>
+					<div class="in-box">
+						<span class="label">密码</span>
+						<input id="input_password" class="password" name="password"
+							type="password"
+							autocomplete="off"
+							placeholder="密码"
+							value="00000000"/>
+						<!-- <span class="key"></span> -->
+					</div>
+					<div class="btn-box">
+						<input class="login-btn" name="" type="submit" value="登 录" />
+					</div>
+					<div class="function">
+						<a href="javascript: void(0);"
+							onmouseover="document.getElementById('info-show').style.display='block'"
+							onmouseout="document.getElementById('info-show').style.display='none'">忘记密码</a>
+						<div id="info-show" class="login-form-error" style="display: none;">
+							<span>请联系管理员重置密码</span>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="login-footer">
+			<div class="copyright">版权所有：中科软科技股份有限公司</div>
+		</div>
+	</div>
+
+	<!--登陆页面嵌入iframe中时处理-->
+	<script type="text/javascript">
+		if (self != top) {
+			window.parent.location.reload();
+		}
+	</script>
+	
+</body>
+</html>

@@ -1,0 +1,23 @@
+# 开发环境
+
+# 系统配置
+app:
+    config:
+        # 上传文件保存位置路径
+        uploadPath: c:/sinowcm/files/
+        # 应用访问地址
+        url: http://localhost:9301
+
+# spring相关配置
+spring:
+    # 数据源配置
+    datasource:
+        url: jdbc:mysql://192.168.1.254:3306/boms?zeroDateTimeBehavior=convertToNull&relaxAutoCommit=true&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
+        username: root
+        password: root
+        driver-class-name: com.mysql.jdbc.Driver
+
+# 服务器
+server:
+    #端口
+    port: 9301

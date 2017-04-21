@@ -1,0 +1,82 @@
+# 系统配置
+#app:
+    #config:
+        # 上传文件保存位置路径，如：c:/sinowcm/files/
+        #uploadPath: 
+        # 应用访问地址，如：http://localhost
+        #url: 
+
+# spring相关配置
+spring:
+    profiles:
+        active: dev
+    # 附件上传
+    multipart:
+        enabled: true
+        file-size-threshold: 0
+        location: ${app.config.uploadPath}
+        max-file-size: 50M
+        max-request-size: 50M
+    # 基本请求
+    http:
+        encoding:
+            charset: UTF-8
+        converters:
+            preferred-json-mapper: true
+    # json转换-请修改自定义json转换CustomConfig
+    # 页面模板
+    thymeleaf:
+        enabled: true
+        encoding: UTF-8
+        prefix: classpath:/templates/
+        suffix: .html
+        # 调试使用
+        cache: false
+    # 资源文件
+    resources:
+        static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${app.config.uploadPath}
+    # 数据源
+    datasource:
+        testWhileIdle: true
+        timeBetweenEvictionRunsMillis: 60000
+        validationQuery: SELECT 1
+
+# 日志
+logging:
+    path: ./log
+
+# 服务器
+server:
+    session:
+        timeout: 1800
+    #监听路径
+    servlet-path: /
+    #压缩
+    compression:
+        #是否开启压缩
+        enabled: true
+
+# jwt 认证
+audience:
+    # token名
+    tokenName: access-token
+    # 过期时间
+    expiresSecond: 86400
+    # 加密字符串
+    base64Secret: sinosoftwjwmb
+    # 过滤地址
+    urlPatterns[0]: /api/**
+
+# 邮件发送者配置
+mail:
+    server:
+        # 是否发送邮件
+        boolemail: false
+        # 邮箱主机
+        host: smtp.126.com
+        # 邮箱用户名
+        username: test
+        # 邮箱密码
+        password: test
+        # 邮箱url
+        fromemail: test@126.com

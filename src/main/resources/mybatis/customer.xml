@@ -1,0 +1,51 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 业务-客户 -->
+<mapper namespace="cn.com.sinosoft.boms.customer">
+
+	<!-- 获取客户列表 -->
+	<select id="customer-list"
+		resultType="cn.com.sinosoft.bomsmgr.entity.TCustomer">
+		SELECT
+		  t.id,
+		  t.name,
+		  t.create_time,
+		  t.update_time
+		FROM t_customer t 
+		where 1=1
+		<if test="id != null">
+		    and t.id = #{id}
+		</if>
+		<if test="name != null">
+		    and t.name like CONCAT('%',#{name},'%')
+		</if>
+		ORDER BY t.create_time desc
+	</select>
+	
+	<!-- 客户添加 -->
+	<insert id="customer-add" useGeneratedKeys="true" keyProperty="id">
+		insert into t_customer
+			(name)
+		values
+			(#{name})
+	</insert>
+	
+	<!-- 客户修改 -->
+	<update id="customer-edit">
+		update t_customer set
+			name=#{name}
+		where id=#{id}
+	</update>
+	
+	<!-- 客户删除 -->
+	<delete id="customer-del">
+		delete from t_customer 
+			where id in 
+			<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">  
+			 #{item}
+			</foreach>
+	</delete>
+	
+</mapper>

@@ -1,0 +1,31 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 通用-用户 -->
+<mapper namespace="cn.com.sinosoft.common.user">
+
+	<!-- 获取用户列表 -->
+	<select id="user-list"
+		resultType="cn.com.sinosoft.bomsmgr.entity.TUser">
+		SELECT
+		  id,
+		  user_name,
+		  pasw_word,
+		  real_name,
+		  sex,
+		  state,
+		  create_time,
+		  update_time
+		FROM t_user
+		where 1=1
+		<if test="userName != null">
+		    AND user_name = #{userName}
+		</if>
+		<if test="passWord != null">
+		    AND pasw_word = #{passWord}
+		</if>
+		ORDER BY create_time desc
+	</select>
+	
+</mapper>

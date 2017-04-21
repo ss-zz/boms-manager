@@ -1,0 +1,27 @@
+[
+{
+	"dicType": "GENDER",
+	"dicTypeDesc": "性别",
+	"dicItems": [
+		{"code": "1", "desc": "男"},
+		{"code": "2", "desc": "女"}
+	]
+},
+{
+	"dicType": "ISORNOT",
+	"dicTypeDesc": "是否",
+	"dicItems": [
+		{"code": "1", "desc": "是"},
+		{"code": "0", "desc": "否"}
+	]
+},
+{
+	"dicType": "WEBSITE_PUBTYPE",
+	"dicTypeDesc": "站点发布类型",
+	"dicItems": [
+		{"code": "0", "desc": "内部发布"},
+		{"code": "1", "desc": "本地发布"},
+		{"code": "2", "desc": "ftp远程发布"}
+	]
+}
+]
