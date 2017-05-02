@@ -2,6 +2,7 @@ package cn.com.sinosoft.tbf.config.security;
 
 import java.util.Collection;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import cn.com.sinosoft.bomsmgr.entity.TUser;
 import cn.com.sinosoft.bomsmgr.model.common.LoginUserInfo;
+import cn.com.sinosoft.bomsmgr.service.common.CommonBaseService;
 import cn.com.sinosoft.bomsmgr.service.common.CommonUserService;
 
 /**
@@ -28,6 +30,8 @@ public class AuthenticationProviderCustom implements AuthenticationProvider {
 
 	@Autowired
 	private CommonUserService userServcie;
+	@Resource
+	CommonBaseService commonBaseService;
 	@Autowired
 	HttpServletRequest request;
 
@@ -44,13 +48,14 @@ public class AuthenticationProviderCustom implements AuthenticationProvider {
 			if (!CommonUserService.USER_STATE_LOCKED.equals(userInfo.getState())) {
 				throw new BadCredentialsException("用户已禁用");
 			}
-			
+
 			LoginUserInfo loginUserInfo = new LoginUserInfo();
 			loginUserInfo.setId(userInfo.getId());
 			loginUserInfo.setUserName(userInfo.getUserName());
 			loginUserInfo.setPassWord(userInfo.getPassWord());
 			loginUserInfo.setUser(userInfo);
-			
+			loginUserInfo.setMfTreeVo(commonBaseService.getUserMF(userInfo.getUserName(), "1"));
+
 			request.getSession().setAttribute(CommonUserService.SESSION_NAME_USERINFO, loginUserInfo);
 
 			// 授权

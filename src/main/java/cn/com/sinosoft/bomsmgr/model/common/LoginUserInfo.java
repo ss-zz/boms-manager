@@ -1,6 +1,7 @@
 package cn.com.sinosoft.bomsmgr.model.common;
 
 import cn.com.sinosoft.bomsmgr.entity.TUser;
+import cn.com.sinosoft.bomsmgr.model.base.MFTreeVO;
 
 /**
  * 登录用户信息
@@ -9,11 +10,12 @@ import cn.com.sinosoft.bomsmgr.entity.TUser;
  * @since 2017年4月21日
  */
 public class LoginUserInfo {
-	
+
 	private String id;
 	private String userName;
 	private String passWord;
 	private TUser user;
+	private MFTreeVO mfTreeVo;
 	public String getId() {
 		return id;
 	}
@@ -37,6 +39,12 @@ public class LoginUserInfo {
 	}
 	public void setUser(TUser user) {
 		this.user = user;
+	}
+	public MFTreeVO getMfTreeVo() {
+		return mfTreeVo;
+	}
+	public void setMfTreeVo(MFTreeVO mfTreeVo) {
+		this.mfTreeVo = mfTreeVo;
 	}
 
 }

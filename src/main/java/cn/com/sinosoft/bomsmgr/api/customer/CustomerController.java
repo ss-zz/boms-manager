@@ -5,7 +5,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import cn.com.sinosoft.bomsmgr.entity.TCustomer;
 import cn.com.sinosoft.bomsmgr.model.customer.ParamsCustomerEdit;
@@ -28,7 +29,7 @@ import cn.com.sinosoft.tbf.domain.common.ResultCode;
  * @author <a href="mainto:nytclizy@gmail.com">lizhiyong</a>
  * @since 2017年4月21日
  */
-@Controller
+@RestController
 @RequestMapping("/api/customer")
 public class CustomerController {
 
@@ -37,7 +38,7 @@ public class CustomerController {
 
 	/**
 	 * 客户列表
-	 * 
+	 *
 	 * @param searchParams
 	 *            查询参数
 	 * @param pageParam
@@ -45,6 +46,7 @@ public class CustomerController {
 	 * @return
 	 */
 	@GetMapping("list")
+	@ResponseBody
 	public APIResult<PagingResult<TCustomer>> getList(Map<String, Object> searchParams, PageParam pageParam) {
 		PagingResult<TCustomer> result = customerService.getCustomerList(searchParams, pageParam);
 		return new APIResult<PagingResult<TCustomer>>(result);
@@ -52,7 +54,7 @@ public class CustomerController {
 
 	/**
 	 * 添加客户
-	 * 
+	 *
 	 * @param customer
 	 *            客户信息
 	 * @return
@@ -67,7 +69,7 @@ public class CustomerController {
 
 	/**
 	 * 编辑客户
-	 * 
+	 *
 	 * @param customer
 	 *            客户信息
 	 * @return
@@ -83,7 +85,7 @@ public class CustomerController {
 
 	/**
 	 * 删除客户
-	 * 
+	 *
 	 * @param ids
 	 *            id列表（以,隔开）
 	 * @return 影响数据条数
@@ -95,7 +97,7 @@ public class CustomerController {
 
 	/**
 	 * 获取客户详情
-	 * 
+	 *
 	 * @param id
 	 *            文档id
 	 * @return

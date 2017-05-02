@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import cn.com.sinosoft.bomsmgr.model.common.LoginUserInfo;
+import cn.com.sinosoft.bomsmgr.service.common.CommonUserService;
 import cn.com.sinosoft.tbf.common.security.annotation.mobileapi.HasRolesMApi;
 import cn.com.sinosoft.tbf.common.util.http.ResponseUtil;
 import cn.com.sinosoft.tbf.common.util.security.JwtHelper;
@@ -29,18 +31,23 @@ public class ApiTokenAuthInterceptor extends HandlerInterceptorAdapter {
 	private Class<?> clazz;
 	private Method method;
 	private HttpServletResponse response;
+	private HttpServletRequest request;
 
 	@Autowired
 	private JwtHelper jwtHelper;
 
 	@Override
-	public boolean preHandle(HttpServletRequest request,
-			HttpServletResponse response, Object handler) throws Exception {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+			throws Exception {
 		boolean result = true;
 		this.response = response;
+		this.request = request;
 
-		// 验证jwt token
-		result = result && validJWTToken();
+		// 验证session token
+		if (!validSession()) {
+			// 验证jwt token
+			result = result && validJWTToken();
+		}
 
 		if (handler instanceof HandlerMethod) {
 			HandlerMethod handlerMethod = (HandlerMethod) handler;
@@ -49,8 +56,7 @@ public class ApiTokenAuthInterceptor extends HandlerInterceptorAdapter {
 			if (clazz != null && method != null) {
 
 				// 处理角色权限过滤
-				if (clazz.isAnnotationPresent(HasRolesMApi.class)
-						|| method.isAnnotationPresent(HasRolesMApi.class)) {
+				if (clazz.isAnnotationPresent(HasRolesMApi.class) || method.isAnnotationPresent(HasRolesMApi.class)) {
 					result = result && validRolesMApi();
 				}
 
@@ -58,6 +64,17 @@ public class ApiTokenAuthInterceptor extends HandlerInterceptorAdapter {
 
 		}
 		return result && super.preHandle(request, response, handler);
+	}
+
+	/**
+	 * 验证session用户
+	 *
+	 * @return
+	 */
+	private boolean validSession() {
+		LoginUserInfo loginUserInfo = (LoginUserInfo) request.getSession()
+				.getAttribute(CommonUserService.SESSION_NAME_USERINFO);
+		return loginUserInfo == null ? false : true;
 	}
 
 	/**
@@ -74,7 +91,7 @@ public class ApiTokenAuthInterceptor extends HandlerInterceptorAdapter {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * 处理角色过滤注解<br/>
 	 * 只要满足任意一个角色即可验证通过
@@ -85,12 +102,10 @@ public class ApiTokenAuthInterceptor extends HandlerInterceptorAdapter {
 		boolean ret = false;
 		List<AppRoles> roles = new ArrayList<AppRoles>();
 		if (clazz.isAnnotationPresent(HasRolesMApi.class)) {
-			AppRoles[] clazzRoles = clazz.getAnnotation(HasRolesMApi.class)
-					.value();
+			AppRoles[] clazzRoles = clazz.getAnnotation(HasRolesMApi.class).value();
 			Collections.addAll(roles, clazzRoles);
 		} else if (method.isAnnotationPresent(HasRolesMApi.class)) {
-			AppRoles[] methodRoles = method.getAnnotation(HasRolesMApi.class)
-					.value();
+			AppRoles[] methodRoles = method.getAnnotation(HasRolesMApi.class).value();
 			Collections.addAll(roles, methodRoles);
 		}
 		for (AppRoles role : roles) {
@@ -108,18 +123,16 @@ public class ApiTokenAuthInterceptor extends HandlerInterceptorAdapter {
 	 * 创建未授权返回信息
 	 */
 	private void createUnAuthResponse() {
-		APIResult<Object> resultMsg = new APIResult<Object>(
-				ResultCode.UNAUTHORIZED.getCode(),
+		APIResult<Object> resultMsg = new APIResult<Object>(ResultCode.UNAUTHORIZED.getCode(),
 				ResultCode.UNAUTHORIZED.getDesc());
 		ResponseUtil.createApiResultJson(response, resultMsg);
 	}
-	
+
 	/**
 	 * 创建未登录返回信息
 	 */
 	private void createUnLoginResponse() {
-		APIResult<Object> resultMsg = new APIResult<Object>(
-				ResultCode.UNAUTHENTICATION.getCode(),
+		APIResult<Object> resultMsg = new APIResult<Object>(ResultCode.UNAUTHENTICATION.getCode(),
 				ResultCode.UNAUTHENTICATION.getDesc());
 		ResponseUtil.createApiResultJson(response, resultMsg);
 	}

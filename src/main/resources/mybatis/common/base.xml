@@ -1,0 +1,48 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 通用-基础 -->
+<mapper namespace="cn.com.sinosoft.common.base">
+
+	<!-- 获取公共码表 -->
+	<select id="code-list"
+		resultType="cn.com.sinosoft.bomsmgr.entity.TBaseDics">
+		SELECT
+		  id,
+		  code_type,
+		  code_value,
+		  code_desc,
+		  is_use,
+		  rank
+		FROM t_base_dics
+		where 1=1
+		<if test="isUse != null">
+		    AND is_use = #{isUse}
+		</if>
+		<if test="codeTypes != null">
+		    AND code_type in 
+			<foreach item="item" index="index" collection="codeTypes" open="(" separator="," close=")">  
+			 #{item}
+			</foreach>
+		</if>
+		ORDER BY rank
+	</select>
+	
+	<!-- 获取菜单、功能点列表 -->
+	<select id="menu-fun-list"
+		resultType="cn.com.sinosoft.bomsmgr.entity.TAuthMenuFun">
+		SELECT
+		  id,
+		  mf_key,
+		  mf_name,
+		  par_id,
+		  type,
+		  url,
+		  level
+		FROM t_auth_menufun
+		where 1=1
+		ORDER BY rank
+	</select>
+	
+</mapper>
