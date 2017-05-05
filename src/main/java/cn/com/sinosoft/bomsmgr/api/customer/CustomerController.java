@@ -9,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -47,7 +46,7 @@ public class CustomerController {
 	 */
 	@GetMapping("list")
 	@ResponseBody
-	public APIResult<PagingResult<TCustomer>> getList(Map<String, Object> searchParams, PageParam pageParam) {
+	public APIResult<PagingResult<TCustomer>> getList(@RequestParam Map<String, Object> searchParams, PageParam pageParam) {
 		PagingResult<TCustomer> result = customerService.getCustomerList(searchParams, pageParam);
 		return new APIResult<PagingResult<TCustomer>>(result);
 	}
@@ -60,7 +59,7 @@ public class CustomerController {
 	 * @return
 	 */
 	@PostMapping("add")
-	public APIResult<Integer> addCustom(@Valid @RequestBody ParamsCustomerEdit customer, BindingResult errors) {
+	public APIResult<Integer> addCustom(@Valid ParamsCustomerEdit customer, BindingResult errors) {
 		if (errors.hasErrors()) {
 			return new APIResult<Integer>(ResultCode.FAILURE.getCode(), errors);
 		}
@@ -75,7 +74,7 @@ public class CustomerController {
 	 * @return
 	 */
 	@PostMapping("edit")
-	public APIResult<String> editCustom(@Valid @RequestBody ParamsCustomerEdit customer, BindingResult errors) {
+	public APIResult<String> editCustom(@Valid ParamsCustomerEdit customer, BindingResult errors) {
 		if (errors.hasErrors()) {
 			return new APIResult<String>(ResultCode.FAILURE.getCode(), errors);
 		}
